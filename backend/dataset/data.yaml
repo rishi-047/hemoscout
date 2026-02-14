@@ -1,0 +1,6 @@
+train: /Users/junixr/Documents/Personal Projects/Hemoscout/Hemoscout_dataset_ml/train/images
+val: /Users/junixr/Documents/Personal Projects/Hemoscout/Hemoscout_dataset_ml/valid/images
+test: /Users/junixr/Documents/Personal Projects/Hemoscout/Hemoscout_dataset_ml/test/images
+
+nc: 3
+names: ['Platelets', 'RBC', 'WBC']
