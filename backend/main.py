@@ -16,10 +16,17 @@ MODEL_PATH = BACKEND_DIR / "models" / "best.pt"
 
 app = FastAPI(title="HemoScout API", version="1.0.0")
 
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+# Build allowed origins list from env var + Vercel pattern
+_extra_origins = [
+    o.strip()
+    for o in os.getenv("ALLOWED_ORIGINS", "").split(",")
+    if o.strip()
+]
+allowed_origins = ["http://localhost:5173"] + _extra_origins
 
 app.add_middleware(
     CORSMiddleware,
+    allow_origin_regex=r"https://hemoscout[-a-z0-9]*\.vercel\.app",
     allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
