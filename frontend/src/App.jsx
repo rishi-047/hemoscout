@@ -6,6 +6,8 @@ import CellCounts from './components/CellCounts'
 import Histogram from './components/Histogram'
 import InsightPanel from './components/InsightPanel'
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 export default function App() {
   const [imageFile, setImageFile] = useState(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
@@ -22,7 +24,7 @@ export default function App() {
     form.append('file', file)
 
     try {
-      const res = await fetch('/analyze', { method: 'POST', body: form })
+      const res = await fetch(`${API_BASE}/analyze`, { method: 'POST', body: form })
       if (!res.ok) {
         const err = await res.json().catch(() => ({}))
         throw new Error(err.detail || `Server error (${res.status})`)

@@ -11,8 +11,10 @@ from dotenv import load_dotenv
 from google import genai
 from ultralytics import YOLO
 
-# Load .env from project root
-load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")
+# Load .env from project root (no-op in production where real env vars are set)
+_env_path = Path(__file__).parent.parent / ".env"
+if _env_path.exists():
+    load_dotenv(dotenv_path=_env_path)
 
 # Constants
 BACKEND_DIR = Path(__file__).parent

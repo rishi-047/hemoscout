@@ -1,5 +1,6 @@
 """HemoScout — FastAPI entry point."""
 
+import os
 import shutil
 import tempfile
 from pathlib import Path
@@ -8,16 +9,18 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from ml_logic import Analyzer
+from backend.ml_logic import Analyzer
 
 BACKEND_DIR = Path(__file__).parent
 MODEL_PATH = BACKEND_DIR / "models" / "best.pt"
 
 app = FastAPI(title="HemoScout API", version="1.0.0")
 
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -47,7 +50,7 @@ async def health():
 
     return {
         "status": "healthy",
-        "mps_available": torch.backends.mps.is_available(),
+        "gpu_available": torch.cuda.is_available() or torch.backends.mps.is_available(),
         "model_loaded": analyzer is not None,
     }
 
