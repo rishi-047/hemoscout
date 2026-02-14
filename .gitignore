@@ -12,6 +12,7 @@ env/
 # Models & training output
 backend/models/train/
 *.pt
+!backend/models/best.pt
 
 # Dataset cache
 *.cache
